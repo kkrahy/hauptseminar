@@ -25,7 +25,8 @@
 <body>
 
     <h1>Welcome to the Numerical Stroop Task!</h1>
-    <p id="instruction">Click the correct number based on the font size.</p>
+    
+    <!-- Instruction text removed -->
 
     <div id="task">
         <!-- Numbers will be dynamically injected here -->
@@ -76,7 +77,8 @@
                 if (trialNum <= trials.length) {
                     showTrial(trials[trialNum - 1]);
                 } else {
-                    document.getElementById("instruction").textContent = "Task complete!";
+                    // You can still provide feedback after the task ends, if needed
+                    alert("Task complete!");
                 }
             }, 1000);
         }
