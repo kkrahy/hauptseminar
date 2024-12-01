@@ -39,12 +39,12 @@
         let trialNum = 1;
         let correctAnswers = 0;
 
-        // Define the trials
+        // Define the trials with font size adjustments
         let trials = [
-            { num1: "6", num2: "7", large: 2, correct: 2 },  // 7 is larger, so correct answer is 2
-            { num1: "2", num2: "9", large: 2, correct: 2 },  // 9 is larger, so correct answer is 2
-            { num1: "4", num2: "5", large: 2, correct: 2 },  // 5 is larger, so correct answer is 2
-            { num1: "8", num2: "3", large: 1, correct: 1 }   // 8 is larger, so correct answer is 1
+            { num1: "6", num2: "7", num1FontSize: 20, num2FontSize: 40, correct: 2 },  // 7 is larger and has font 40
+            { num1: "2", num2: "9", num1FontSize: 40, num2FontSize: 20, correct: 1 },  // 2 is larger and has font 40
+            { num1: "8", num2: "9", num1FontSize: 20, num2FontSize: 20, correct: 1 },  // 8 and 9 both have font 20
+            { num1: "3", num2: "6", num1FontSize: 40, num2FontSize: 20, correct: 1 }   // 3 is larger and has font 40
         ];
 
         function showTrial(trial) {
@@ -53,18 +53,16 @@
             let num1 = document.createElement("span");
             let num2 = document.createElement("span");
 
-            // Apply appropriate font size for the larger number
+            // Apply appropriate font size for each number
             num1.textContent = trial.num1;
             num2.textContent = trial.num2;
 
             num1.classList.add("number");
             num2.classList.add("number");
 
-            if (trial.large === 1) {
-                num1.classList.add("large");
-            } else if (trial.large === 2) {
-                num2.classList.add("large");
-            }
+            // Apply specific font size based on the trial
+            num1.style.fontSize = trial.num1FontSize + 'px';
+            num2.style.fontSize = trial.num2FontSize + 'px';
 
             // Append the numbers to the task container
             taskDiv.appendChild(num1);
@@ -109,3 +107,4 @@
 
 </body>
 </html>
+
