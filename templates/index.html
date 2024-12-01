@@ -38,12 +38,12 @@
     </div>
 
     <div id="feedback"></div>
-    <div id="timer">Time: 0s</div>
+    <div id="timer">Time: 0.0s</div>
 
     <script>
         let trialNum = 1;
         let correctAnswers = 0;
-        let timer = 0;
+        let startTime;
         let timerInterval;
         let trials = [
             { num1: "6", num2: "7", num1FontSize: 20, num2FontSize: 40 },
@@ -53,10 +53,12 @@
         ];
 
         function startTimer() {
+            startTime = performance.now();  // Record the start time
             timerInterval = setInterval(() => {
-                timer++;
-                document.getElementById("timer").textContent = `Time: ${timer}s`;
-            }, 1000);
+                const elapsedTime = performance.now() - startTime;  // Get elapsed time in ms
+                const seconds = (elapsedTime / 1000).toFixed(1);  // Convert to seconds, rounding to 1 decimal place
+                document.getElementById("timer").textContent = `Time: ${seconds}s`;
+            }, 50); // Update every 50ms for better precision
         }
 
         function stopTimer() {
@@ -92,6 +94,11 @@
         function handleClick(selectedNum, num1, num2) {
             const feedbackDiv = document.getElementById("feedback");
 
+            // Start the timer when the first trial answer is clicked
+            if (trialNum === 1 && !startTime) {
+                startTimer();  // Start timer only once on the first click
+            }
+
             // Determine the correct answer based on which number is numerically larger
             const correctAnswer = parseInt(num1) > parseInt(num2) ? 1 : 2;
 
@@ -121,13 +128,11 @@
             feedbackDiv.innerHTML = `Task complete! You got ${correctAnswers} out of ${trials.length} correct.`;
         }
 
-        // Start the first trial and the timer
-        startTimer();
+        // Start the first trial
         showTrial(trials[trialNum - 1]);
     </script>
 
 </body>
 </html>
-
 
 
