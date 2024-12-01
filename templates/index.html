@@ -24,6 +24,10 @@
             margin-top: 20px;
             font-size: 18px;
         }
+        #timer {
+            font-size: 20px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -34,18 +38,30 @@
     </div>
 
     <div id="feedback"></div>
+    <div id="timer">Time: 0s</div>
 
     <script>
         let trialNum = 1;
         let correctAnswers = 0;
-
-        // Define the trials with font size adjustments
+        let timer = 0;
+        let timerInterval;
         let trials = [
-            { num1: "6", num2: "7", num1FontSize: 20, num2FontSize: 40 },  // 7 is larger
-            { num1: "2", num2: "9", num1FontSize: 40, num2FontSize: 20 },  // 9 is larger
-            { num1: "8", num2: "9", num1FontSize: 20, num2FontSize: 20 },  // 9 is larger
-            { num1: "3", num2: "6", num1FontSize: 40, num2FontSize: 20 }   // 6 is larger
+            { num1: "6", num2: "7", num1FontSize: 20, num2FontSize: 40 },
+            { num1: "2", num2: "9", num1FontSize: 40, num2FontSize: 20 },
+            { num1: "8", num2: "9", num1FontSize: 20, num2FontSize: 20 },
+            { num1: "3", num2: "6", num1FontSize: 40, num2FontSize: 20 }
         ];
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timer++;
+                document.getElementById("timer").textContent = `Time: ${timer}s`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
 
         function showTrial(trial) {
             const taskDiv = document.getElementById("task");
@@ -95,6 +111,7 @@
                     showTrial(trials[trialNum - 1]);
                 } else {
                     showFinalResults();
+                    stopTimer();  // Stop the timer when all trials are done
                 }
             }, 1000);
         }
@@ -104,11 +121,13 @@
             feedbackDiv.innerHTML = `Task complete! You got ${correctAnswers} out of ${trials.length} correct.`;
         }
 
-        // Start the first trial
+        // Start the first trial and the timer
+        startTimer();
         showTrial(trials[trialNum - 1]);
     </script>
 
 </body>
 </html>
+
 
 
