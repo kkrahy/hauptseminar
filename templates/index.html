@@ -20,24 +20,31 @@
             font-size: 40px;
             font-weight: bold;
         }
+        #feedback {
+            margin-top: 20px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
 
     <h1>Welcome to the Numerical Stroop Task!</h1>
-    
-    <!-- Instruction text removed -->
-
     <div id="task">
         <!-- Numbers will be dynamically injected here -->
     </div>
 
+    <div id="feedback"></div>
+
     <script>
         let trialNum = 1;
+        let correctAnswers = 0;
+
+        // Define the trials
         let trials = [
-            { num1: "6", num2: "7", large: 2 },
-            { num1: "2", num2: "9", large: 1 },
-            { num1: "4", num2: "5", large: 0 }
+            { num1: "6", num2: "7", large: 2, correct: 2 },  // 7 is larger, so correct answer is 2
+            { num1: "2", num2: "9", large: 2, correct: 2 },  // 9 is larger, so correct answer is 2
+            { num1: "4", num2: "5", large: 2, correct: 2 },  // 5 is larger, so correct answer is 2
+            { num1: "8", num2: "3", large: 1, correct: 1 }   // 8 is larger, so correct answer is 1
         ];
 
         function showTrial(trial) {
@@ -64,23 +71,36 @@
             taskDiv.appendChild(num2);
 
             // Add click event listeners
-            num1.onclick = () => handleClick(1);
-            num2.onclick = () => handleClick(2);
+            num1.onclick = () => handleClick(1, trial.correct);
+            num2.onclick = () => handleClick(2, trial.correct);
         }
 
-        function handleClick(selectedNum) {
-            console.log("Trial " + trialNum + ": Number " + selectedNum + " clicked");
+        function handleClick(selectedNum, correctAnswer) {
+            const feedbackDiv = document.getElementById("feedback");
+
+            // Check if the selected number is correct
+            if (selectedNum === correctAnswer) {
+                feedbackDiv.textContent = "Correct!";
+                correctAnswers++;
+            } else {
+                feedbackDiv.textContent = "Incorrect!";
+            }
 
             // Move to the next trial after 1 second
             setTimeout(() => {
                 trialNum++;
                 if (trialNum <= trials.length) {
+                    feedbackDiv.textContent = '';  // Clear feedback for next trial
                     showTrial(trials[trialNum - 1]);
                 } else {
-                    // You can still provide feedback after the task ends, if needed
-                    alert("Task complete!");
+                    showFinalResults();
                 }
             }, 1000);
+        }
+
+        function showFinalResults() {
+            const feedbackDiv = document.getElementById("feedback");
+            feedbackDiv.innerHTML = `Task complete! You got ${correctAnswers} out of ${trials.length} correct.`;
         }
 
         // Start the first trial
