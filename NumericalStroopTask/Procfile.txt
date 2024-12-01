@@ -1,3 +1,2 @@
-web: python app.py
-heroku buildpacks:set heroku/python
+web: gunicorn app:app
 
